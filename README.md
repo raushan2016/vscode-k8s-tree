@@ -4,7 +4,7 @@ This extension internally uses the [kubectl-tree](https://github.com/ahmetb/kube
 
 ## Features
 
-![Tree View](assets/tree-view.png)
+![Tree View IMG](assets/tree-view.png)
 
 ![Tree View](assets/tree-view.gif)
 

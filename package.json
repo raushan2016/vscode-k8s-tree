@@ -1,7 +1,7 @@
 {
 	"name": "vscode-k8s-tree",
 	"displayName": "vscode-k8s-tree",
-	"description": "Tree view of kubernetes resources",
+	"description": "Tree view of kubernetes resources in VSCode Kubernetes Tools",
 	"version": "0.0.1",
 	"license": "MIT",
 	"publisher": "raushan2016",
@@ -10,7 +10,7 @@
 		"url": "https://github.com/raushan2016/vscode-k8s-tree.git"
 	},
 	"engines": {
-		"vscode": "^1.40.0"
+		"vscode": "^1.44.0"
 	},
 	"categories": [
 		"Other"
