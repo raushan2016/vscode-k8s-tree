@@ -3,6 +3,8 @@
 import * as vscode from 'vscode';
 import * as k8s from 'vscode-kubernetes-tools-api';
 import { transcode } from 'buffer';
+import { TreeViewPanel } from './components/treewebview/treewebview';
+import { ShellResult } from './utils/utils';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -24,11 +26,40 @@ export async function activate(context: vscode.ExtensionContext) {
 		return;
 	}
 
-	let disposable = vscode.commands.registerCommand('vscode-k8s-tree.show', (resource) => {
-		treeView(resource);
-	});
-
+	let disposable = vscode.commands.registerCommand('vscode-k8s-tree.show', renderTreeView);
 	context.subscriptions.push(disposable);
+
+}
+
+async function renderTreeView(resourceNode?: k8s.ClusterExplorerV1.ClusterExplorerResourceNode) {
+	if (!resourceNode) {
+		await vscode.window.showErrorMessage(`TreeView only works for resources, not with kinds`);
+		return;
+	}
+	const kubectl = await k8s.extension.kubectl.v1;
+	if (!kubectl.available) {
+		vscode.window.showErrorMessage(`kubectl not available.`);
+		return;
+	}
+	const rootObjectName = resourceNode.name;
+	const rootObjectKind = resourceNode.resourceKind.manifestKind;
+
+	const cmd = `tree -A  ${rootObjectKind} ${rootObjectName}`;
+	const commandResult = await kubectl.api.invokeCommand(cmd);
+
+	const refresh = (): Promise<ShellResult | undefined> => kubectl.api.invokeCommand(cmd);
+
+	if (!commandResult || commandResult.code !== 0) {
+		if(commandResult?.stderr.includes("unknown command \"tree\" for \"kubectl\""))
+		{
+			vscode.window.showErrorMessage(`Make sure you have installed kubectl plugin \"tree\". Run \"kubectl krew install tree\", More details https://github.com/ahmetb/kubectl-tree`);
+			return;
+		}
+		vscode.window.showErrorMessage(`Treeview failed: ${commandResult? commandResult.stderr : `Unable to get the resource ${rootObjectKind}/${rootObjectName}`}`);
+		return;
+	}
+
+	TreeViewPanel.createOrShow(commandResult.stdout, `${rootObjectKind}/${rootObjectName}`, refresh);
 
 }
 
@@ -72,7 +103,9 @@ async function treeView(resource: any) {
 		'treeview', // Identifies the type of the webview. Used internally
 		`Tree View ${rootObjectKind}/${rootObjectName}`, // Title of the panel displayed to the user
 		vscode.ViewColumn.One, // Editor column to show the new webview panel in.
-		{} // Webview options. More on these later.
+		{
+			enableScripts: true
+		} // Webview options. More on these later.
 	);
 	// And set its HTML contentg
 	panel.webview.html = getWebviewContent(rootObjectName, beautifyHTML(commandResult.stdout));
