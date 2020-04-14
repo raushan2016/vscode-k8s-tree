@@ -22,6 +22,13 @@ Run `kubectl krew install tree` [Details](https://github.com/ahmetb/kubectl-tree
 `npm install`   
 `npm run vscode:prepublish`
 
+## Publish package
+
+`vsce package` Generate vsix file
+`vsce login raushan2016`  
+`vsce publish minor` Publish the package with minor version upgrade
+
+
 ## Author
 
 Raushan Kumar [@raushank2016](https://twitter.com/raushank2016).
