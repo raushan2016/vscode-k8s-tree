@@ -10,7 +10,7 @@
 		"url": "https://github.com/raushan2016/vscode-k8s-tree.git"
 	},
 	"engines": {
-		"vscode": "^1.44.0"
+		"vscode": "^1.31.0"
 	},
 	"categories": [
 		"Other"
@@ -49,10 +49,10 @@
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile && npm run lint",
 		"test": "node ./out/test/runTest.js",
-		"pack":"vsce package"
+		"pack": "vsce package"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.44.0",
+		"@types/vscode": "^1.31.0",
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^7.0.2",
 		"@types/node": "^13.11.0",
