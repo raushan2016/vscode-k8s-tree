@@ -84,7 +84,7 @@ function beautifyHTML(treeString: string): string{
 	lines[0] = `<b>${lines[0]}</b>`;
 	lines.forEach((element, index) => {
 		if(element.includes("True")){
-			lines[index] = element.fontcolor("lime");
+			lines[index] = element.fontcolor("forestgreen");
 		}
 		else if(element.includes("False")){
 			lines[index] = element.fontcolor("tomato");
@@ -103,7 +103,7 @@ function getWebviewContent(name: string, treeNode: any) {
   </head>
   <body>
 	 <b>${name}</b>
-	 <pre>${treeNode}</pre>
+	 <pre style="font-size: 100%">${treeNode}</pre>
   </body>
   </html>`;
 }
