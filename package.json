@@ -3,35 +3,44 @@
 	"displayName": "vscode-k8s-tree",
 	"description": "Tree view of kubernetes resources",
 	"version": "0.0.1",
+	"license": "MIT",
+	"publisher": "raushan2016",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/raushan2016/vscode-k8s-tree.git"
+	},
 	"engines": {
-		"vscode": "^1.43.0"
+		"vscode": "^1.40.0"
 	},
 	"categories": [
 		"Other"
 	],
+	"keywords": [
+		"kubernetes",
+		"k8s",
+		"treeview"
+	],
+	"preview": true,
+	"icon": "icon.png",
 	"activationEvents": [
-        "onView:extension.vsKubernetesExplorer"
+		"onView:extension.vsKubernetesExplorer"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
 				"command": "vscode-k8s-tree.show",
-                "title": "Show Tree"
+				"title": "Show Tree"
 			}
 		],
 		"menus": {
-            "view/item/context": [
-                {
-                    "command": "vscode-k8s-tree.show",
-                    "when": "view == extension.vsKubernetesExplorer && viewItem =~ /vsKubernetes\\.resource\\.serviceendpoint/i"
-                },
-                {
-                    "command": "vscode-k8s-tree.show",
-                    "when": "view == extension.vsKubernetesExplorer && viewItem =~ /vsKubernetes\\.resource\\.*/i"
-                }
-            ]
-        }
+			"view/item/context": [
+				{
+					"command": "vscode-k8s-tree.show",
+					"when": "view == extension.vsKubernetesExplorer && viewItem =~ /vsKubernetes\\.resource\\.*/i"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
@@ -39,7 +48,8 @@
 		"lint": "eslint src --ext ts",
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile && npm run lint",
-		"test": "node ./out/test/runTest.js"
+		"test": "node ./out/test/runTest.js",
+		"pack":"vsce package"
 	},
 	"devDependencies": {
 		"@types/vscode": "^1.44.0",
@@ -56,6 +66,8 @@
 	},
 	"extensionDependencies": [
 		"ms-kubernetes-tools.vscode-kubernetes-tools"
-	]
-
+	],
+	"dependencies": {
+		"vscode-kubernetes-tools-api": "^1.0.0"
+	}
 }
