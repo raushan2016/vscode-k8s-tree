@@ -75,7 +75,22 @@ async function treeView(resource: any) {
 		{} // Webview options. More on these later.
 	);
 	// And set its HTML contentg
-	panel.webview.html = getWebviewContent(rootObjectName, commandResult.stdout);
+	panel.webview.html = getWebviewContent(rootObjectName, beautifyHTML(commandResult.stdout));
+}
+
+function beautifyHTML(treeString: string): string{
+
+	var lines = treeString.split(/[\r\n]+/);
+	lines[0] = `<b>${lines[0]}</b>`;
+	lines.forEach((element, index) => {
+		if(element.includes("True")){
+			lines[index] = element.fontcolor("lime");
+		}
+		else if(element.includes("False")){
+			lines[index] = element.fontcolor("tomato");
+		}
+	});
+	return lines.join("<br>");
 }
 
 function getWebviewContent(name: string, treeNode: any) {
