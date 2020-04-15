@@ -1,6 +1,7 @@
 # vscode-k8s-tree README
 
-This extension internally uses the [kubectl-tree](https://github.com/ahmetb/kubectl-tree) and add `Tree View` command to all kubernetes resource. This commands gives a hierarchy view of kubernetes resources based on `OwnerReferences`
+* This extension is buid on top of `vscode-kubernetes-tools` add `Tree View` command to all kubernetes resource.  
+* `Tree View` command gives a hierarchical view of kubernetes resources based on `OwnerReferences`
 
 ## Features
 
@@ -13,12 +14,7 @@ This extension internally uses the [kubectl-tree](https://github.com/ahmetb/kube
 
 ## Dependencies
 
-- [VSCode Kubernetes Tools v1.0.0 or higher](https://github.com/Azure/vscode-kubernetes-tools/releases/tag/1.0.0) and [it's dependencies](https://github.com/Azure/vscode-kubernetes-tools#dependencies), installed and [configured](https://github.com/Azure/vscode-kubernetes-tools#extension-settings).
-
-## Requirements
-Before using the extension makes sure you installed `kubectl-tree`  
-Run `kubectl krew install tree` [Details](https://github.com/ahmetb/kubectl-tree)
-
+- [VSCode Kubernetes Tools v1.1.0 or higher](https://github.com/Azure/vscode-kubernetes-tools/releases/tag/1.1.0) and [it's dependencies](https://github.com/Azure/vscode-kubernetes-tools#dependencies), installed and [configured](https://github.com/Azure/vscode-kubernetes-tools#extension-settings).
 
 ## Build
 
@@ -28,7 +24,6 @@ Run `kubectl krew install tree` [Details](https://github.com/ahmetb/kubectl-tree
 ## Publish package
 
 `vsce package` Generate vsix file
-`vsce login raushan2016`  
 `vsce publish patch` Publish the package with patch version upgrade
 
 

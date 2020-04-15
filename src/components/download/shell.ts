@@ -2,8 +2,7 @@
 
 import * as vscode from 'vscode';
 import * as shelljs from 'shelljs';
-import * as path from 'path';
-import { getInstallFolder, getUseWsl } from './install';
+import { getInstallFolder } from './install';
 import { ChildProcess } from 'child_process';
 
 export enum Platform {
@@ -27,9 +26,6 @@ export interface Shell {
     execStreaming(cmd: string, callback: ((proc: ChildProcess) => void) | undefined): Promise<ShellResult | undefined>;
     execCore(cmd: string, opts: any, callback?: (proc: ChildProcess) => void, stdin?: string): Promise<ShellResult>;
     unquotedPath(path: string): string;
-    which(bin: string): string | null;
-    cat(path: string): string;
-    ls(path: string): string[];
 }
 
 export const shell: Shell = {
@@ -44,9 +40,6 @@ export const shell: Shell = {
     execStreaming: execStreaming,
     execCore : execCore,
     unquotedPath : unquotedPath,
-    which: which,
-    cat: cat,
-    ls: ls,
 };
 
 const WINDOWS: string = 'win32';
@@ -58,6 +51,15 @@ export interface ShellResult {
 }
 
 export type ShellHandler = (code: number, stdout: string, stderr: string) => void;
+
+
+// Use WSL on Windows
+const EXTENSION_CONFIG_KEY = "vs-kubernetes";
+const USE_WSL_KEY = "use-wsl";
+
+export function getUseWsl(): boolean {
+    return vscode.workspace.getConfiguration(EXTENSION_CONFIG_KEY)[USE_WSL_KEY];
+}
 
 function isWindows(): boolean {
     return (process.platform === WINDOWS) && !getUseWsl();
@@ -136,9 +138,9 @@ function execOpts(): any {
 
 async function exec(cmd: string, kubeconfig?: string, stdin?: string): Promise<ShellResult | undefined> {
     try {
-        let execOpt = execOpts()
+        let execOpt = execOpts();
         if(kubeconfig){
-            execOpt.env["KUBECONFIG"] = kubeconfig
+            execOpt.env["KUBECONFIG"] = kubeconfig;
         }
         return await execCore(cmd, execOpt, null, stdin);
     } catch (ex) {
@@ -204,41 +206,6 @@ function pathVariableName(env: any): string {
 
 function pathEntrySeparator() {
     return isWindows() ? ';' : ':';
-}
-
-function which(bin: string): string | null {
-    if (getUseWsl()) {
-        const result = shelljs.exec(`wsl.exe which ${bin}`);
-        if (result.code !== 0) {
-            throw new Error(result.stderr);
-        }
-        return result.stdout;
-    }
-    return shelljs.which(bin);
-}
-
-function cat(path: string): string {
-    if (getUseWsl()) {
-        const filePath = path.replace(/\\/g, '/');
-        const result = shelljs.exec(`wsl.exe cat ${filePath}`);
-        if (result.code !== 0) {
-            throw new Error(result.stderr);
-        }
-        return result.stdout;
-    }
-    return shelljs.cat(path);
-}
-
-function ls(path: string): string[] {
-    if (getUseWsl()) {
-        const filePath = path.replace(/\\/g, '/');
-        const result = shelljs.exec(`wsl.exe ls ${filePath}`);
-        if (result.code !== 0) {
-            throw new Error(result.stderr);
-        }
-        return result.stdout.trim().split('\n');
-    }
-    return shelljs.ls(path);
 }
 
 export function shellMessage(sr: ShellResult | undefined, invocationFailureMessage: string): string {
