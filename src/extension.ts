@@ -85,8 +85,8 @@ async function renderTreeView(resourceNode?: any ) {// k8s.ClusterExplorerV1.Clu
 			if (failed(result)) {
 				vscode.window.showErrorMessage(`Make sure you have installed kubectl plugin \"tree\". Run \"kubectl krew install tree\", More details https://github.com/ahmetb/kubectl-tree`);
 			}
-			vscode.window.showInformationMessage(`kubectl plugin \"tree\" is installed in the path [${installFolder}]. Make sure you add it in your global PATH `);
-			return;
+			vscode.window.showInformationMessage(`kubectl plugin \"tree\" is installed in the path [${installFolder}]. Make sure you add it in your global PATH for future.`);
+			renderTreeView(resourceNode)
 		}
 		vscode.window.showErrorMessage(`Treeview failed: ${commandResult? commandResult.stderr : `Unable to get the resource ${rootObjectKind}/${rootObjectName}`}`);
 		return;
