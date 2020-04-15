@@ -2,7 +2,7 @@
 	"name": "vscode-k8s-tree",
 	"displayName": "vscode-k8s-tree",
 	"description": "Tree view of kubernetes resources in VSCode Kubernetes Tools",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"license": "MIT",
 	"publisher": "raushan2016",
 	"repository": {
@@ -18,6 +18,7 @@
 	"keywords": [
 		"kubernetes",
 		"k8s",
+		"k8stree",
 		"treeview"
 	],
 	"preview": true,
@@ -31,9 +32,27 @@
 			{
 				"command": "vscode-k8s-tree.show",
 				"title": "Show Tree"
+			},
+			{
+				"command": "vscode-k8s-tree.show.refresh",
+				"title": "Refresh Tree"
 			}
 		],
+        "keybindings": [
+			{
+				"command": "vscode-k8s-tree.show.refresh",
+				"key": "shift+ctrl+r",
+				"mac": "shift+cmd+r",
+				"when": "vscodeKubernetesTreeViewContext"
+            }
+        ],
 		"menus": {
+            "editor/title": [
+                {
+                    "command": "vscode-k8s-tree.show.refresh",
+                    "when": "vscodeKubernetesTreeViewContext"
+                }
+            ],
 			"view/item/context": [
 				{
 					"command": "vscode-k8s-tree.show",

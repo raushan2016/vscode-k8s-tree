@@ -4,6 +4,9 @@ This extension internally uses the [kubectl-tree](https://github.com/ahmetb/kube
 
 ## Features
 
+* The tree view automatically gets updated every 5 seconds for the next 10 minutes.  
+* You can also use the `Refresh` link on the page or use shortcut `shift+ctrl+r` to force refresh.  
+
 ![Tree View IMG](assets/tree-view.PNG)
 
 ![Tree View](assets/tree-view.gif)
@@ -21,6 +24,13 @@ Run `kubectl krew install tree` [Details](https://github.com/ahmetb/kubectl-tree
 
 `npm install`   
 `npm run vscode:prepublish`
+
+## Publish package
+
+`vsce package` Generate vsix file
+`vsce login raushan2016`  
+`vsce publish minor` Publish the package with minor version upgrade
+
 
 ## Author
 
