@@ -23,7 +23,7 @@ export interface Shell {
     combinePath(basePath: string, relativePath: string): string;
     fileUri(filePath: string): vscode.Uri;
     execOpts(): any;
-    exec(cmd: string, stdin?: string): Promise<ShellResult | undefined>;
+    exec(cmd: string, kubeconfig?: string, stdin?: string): Promise<ShellResult | undefined>;
     execStreaming(cmd: string, callback: ((proc: ChildProcess) => void) | undefined): Promise<ShellResult | undefined>;
     execCore(cmd: string, opts: any, callback?: (proc: ChildProcess) => void, stdin?: string): Promise<ShellResult>;
     unquotedPath(path: string): string;
@@ -134,9 +134,13 @@ function execOpts(): any {
     return opts;
 }
 
-async function exec(cmd: string, stdin?: string): Promise<ShellResult | undefined> {
+async function exec(cmd: string, kubeconfig?: string, stdin?: string): Promise<ShellResult | undefined> {
     try {
-        return await execCore(cmd, execOpts(), null, stdin);
+        let execOpt = execOpts()
+        if(kubeconfig){
+            execOpt.env["KUBECONFIG"] = kubeconfig
+        }
+        return await execCore(cmd, execOpt, null, stdin);
     } catch (ex) {
         vscode.window.showErrorMessage(ex);
         return undefined;

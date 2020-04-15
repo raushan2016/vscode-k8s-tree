@@ -94,6 +94,6 @@
   "tar": "^4.4.1",
   "shelljs": "^0.7.7",
   "@types/shelljs": "^0.8.7",
-  "vscode-kubernetes-tools-api": "^1.0.0"
+  "vscode-kubernetes-tools-api": "^1.1.0"
   }
 }

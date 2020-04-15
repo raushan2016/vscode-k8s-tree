@@ -38,22 +38,21 @@ export async function activate(context: vscode.ExtensionContext) {
 
 }
 
-/* async function runkubectl(cmd: string):Promise<ShellResult | undefined> {
+ async function runkubectl(cmd: string):Promise<ShellResult | undefined> {
     const configuration = await k8s.extension.configuration.v1;
     if (!configuration.available) {
         return;
     }
     const path = await configuration.api.getKubeconfigPath();
-
     if (path.pathType === 'host') {
-		return await shell.exec(`kubectl ${cmd} --kubeconfig ${path.hostPath}`);
+		return await shell.exec(`kubectl ${cmd}`, path.hostPath);
     } else if (path.pathType === 'wsl') {
-		 return await shell.exec(`wsl kubectl ${cmd} --kubeconfig ${path.hostPath}`);
+		 return await shell.exec(`wsl kubectl ${cmd} --kubeconfig ${path.wslPath}`);
         // WSL-aware:
     } else {
         vscode.window.showErrorMessage('This command is not supported in your current configuration.');
     }
-} */
+} 
 
 async function renderTreeView(resourceNode?: any ) {// k8s.ClusterExplorerV1.ClusterExplorerResourceNode) {
 	if (!resourceNode) {
@@ -69,11 +68,12 @@ async function renderTreeView(resourceNode?: any ) {// k8s.ClusterExplorerV1.Clu
 	const rootObjectKind = resourceNode.kind.manifestKind;
 	
 	const cmd = `tree -A ${rootObjectKind} ${rootObjectName}`;
-	//const commandResult =  await runkubectl(cmd);
-	const commandResult = await kubectl.api.invokeCommand(cmd);
+	const commandResult =  await runkubectl(cmd);
+	//const commandResult = await kubectl.api.invokeCommand(cmd);
 
 	const refresh = (): Promise<ShellResult | undefined> => {
-		return kubectl.api.invokeCommand(cmd);
+		// return kubectl.api.invokeCommand(cmd);
+		return runkubectl(cmd);
 	};
 
 	if (!commandResult || commandResult.code !== 0) {
