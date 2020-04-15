@@ -2,7 +2,7 @@
   "name": "vscode-k8s-tree",
   "displayName": "vscode-k8s-tree",
   "description": "Tree view of kubernetes resources in VSCode Kubernetes Tools",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "MIT",
   "publisher": "raushan2016",
   "repository": {
@@ -72,10 +72,8 @@
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
-    "@types/mkdirp": "^1.0.0",
     "@types/mocha": "^7.0.2",
     "@types/node": "^13.11.0",
-    "@types/tmp": "^0.1.0",
     "@types/vscode": "^1.31.0",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
@@ -89,6 +87,10 @@
     "ms-kubernetes-tools.vscode-kubernetes-tools"
   ],
   "dependencies": {
+    "mkdirp": "^0.5.1",
+    "tmp": "^0.0.31",
+    "@types/mkdirp": "^1.0.0",
+    "@types/tmp": "^0.1.0",
     "download": "^7.1.0",
     "@types/tar": "^4.0.0",
     "tar": "^4.4.1",
