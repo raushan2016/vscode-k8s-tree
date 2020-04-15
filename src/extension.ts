@@ -5,6 +5,11 @@ import * as k8s from 'vscode-kubernetes-tools-api';
 import { transcode } from 'buffer';
 import { TreeViewPanel } from './components/treewebview/treewebview';
 import { ShellResult } from './utils/utils';
+import { shell } from './components/download/shell';
+import { installKubectlTree, getInstallFolder } from './components/download/install';
+import { failed} from './components/download/errorable';
+
+const TOOL = 'kubectl-tree';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -33,6 +38,23 @@ export async function activate(context: vscode.ExtensionContext) {
 
 }
 
+/* async function runkubectl(cmd: string):Promise<ShellResult | undefined> {
+    const configuration = await k8s.extension.configuration.v1;
+    if (!configuration.available) {
+        return;
+    }
+    const path = await configuration.api.getKubeconfigPath();
+
+    if (path.pathType === 'host') {
+		return await shell.exec(`kubectl ${cmd} --kubeconfig ${path.hostPath}`);
+    } else if (path.pathType === 'wsl') {
+		 return await shell.exec(`wsl kubectl ${cmd} --kubeconfig ${path.hostPath}`);
+        // WSL-aware:
+    } else {
+        vscode.window.showErrorMessage('This command is not supported in your current configuration.');
+    }
+} */
+
 async function renderTreeView(resourceNode?: any ) {// k8s.ClusterExplorerV1.ClusterExplorerResourceNode) {
 	if (!resourceNode) {
 		await vscode.window.showErrorMessage(`TreeView only works for resources, not with kinds`);
@@ -45,8 +67,9 @@ async function renderTreeView(resourceNode?: any ) {// k8s.ClusterExplorerV1.Clu
 	}
 	const rootObjectName = resourceNode.name;
 	const rootObjectKind = resourceNode.kind.manifestKind;
-
+	
 	const cmd = `tree -A ${rootObjectKind} ${rootObjectName}`;
+	//const commandResult =  await runkubectl(cmd);
 	const commandResult = await kubectl.api.invokeCommand(cmd);
 
 	const refresh = (): Promise<ShellResult | undefined> => {
@@ -56,7 +79,13 @@ async function renderTreeView(resourceNode?: any ) {// k8s.ClusterExplorerV1.Clu
 	if (!commandResult || commandResult.code !== 0) {
 		if(commandResult?.stderr.includes("unknown command \"tree\" for \"kubectl\""))
 		{
-			vscode.window.showErrorMessage(`Make sure you have installed kubectl plugin \"tree\". Run \"kubectl krew install tree\", More details https://github.com/ahmetb/kubectl-tree`);
+			vscode.window.showInformationMessage(`kubectl plugin \"tree\" is missing, trying to install`);
+			const installFolder = getInstallFolder(shell, TOOL);
+			const result = await installKubectlTree(shell, TOOL, installFolder)
+			if (failed(result)) {
+				vscode.window.showErrorMessage(`Make sure you have installed kubectl plugin \"tree\". Run \"kubectl krew install tree\", More details https://github.com/ahmetb/kubectl-tree`);
+			}
+			vscode.window.showInformationMessage(`kubectl plugin \"tree\" is installed in the path [${installFolder}]. Make sure you add it in your global PATH `);
 			return;
 		}
 		vscode.window.showErrorMessage(`Treeview failed: ${commandResult? commandResult.stderr : `Unable to get the resource ${rootObjectKind}/${rootObjectName}`}`);

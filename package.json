@@ -1,92 +1,99 @@
 {
-	"name": "vscode-k8s-tree",
-	"displayName": "vscode-k8s-tree",
-	"description": "Tree view of kubernetes resources in VSCode Kubernetes Tools",
-	"version": "0.0.3",
-	"license": "MIT",
-	"publisher": "raushan2016",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/raushan2016/vscode-k8s-tree.git"
-	},
-	"engines": {
-		"vscode": "^1.31.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"keywords": [
-		"kubernetes",
-		"k8s",
-		"k8stree",
-		"treeview"
-	],
-	"preview": true,
-	"icon": "icon.png",
-	"activationEvents": [
-		"onView:extension.vsKubernetesExplorer"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "vscode-k8s-tree.show",
-				"title": "Show Tree"
-			},
-			{
-				"command": "vscode-k8s-tree.show.refresh",
-				"title": "Refresh Tree"
-			}
-		],
-        "keybindings": [
-			{
-				"command": "vscode-k8s-tree.show.refresh",
-				"key": "shift+ctrl+r",
-				"mac": "shift+cmd+r",
-				"when": "vscodeKubernetesTreeViewContext"
-            }
-        ],
-		"menus": {
-            "editor/title": [
-                {
-                    "command": "vscode-k8s-tree.show.refresh",
-                    "when": "vscodeKubernetesTreeViewContext"
-                }
-            ],
-			"view/item/context": [
-				{
-					"command": "vscode-k8s-tree.show",
-					"when": "view == extension.vsKubernetesExplorer && viewItem =~ /vsKubernetes\\.resource\\.*/i"
-				}
-			]
-		}
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"lint": "eslint src --ext ts",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile && npm run lint",
-		"test": "node ./out/test/runTest.js",
-		"pack": "vsce package"
-	},
-	"devDependencies": {
-		"@types/vscode": "^1.31.0",
-		"@types/glob": "^7.1.1",
-		"@types/mocha": "^7.0.2",
-		"@types/node": "^13.11.0",
-		"eslint": "^6.8.0",
-		"@typescript-eslint/parser": "^2.26.0",
-		"@typescript-eslint/eslint-plugin": "^2.26.0",
-		"glob": "^7.1.6",
-		"mocha": "^7.1.1",
-		"typescript": "^3.8.3",
-		"vscode-test": "^1.3.0"
-	},
-	"extensionDependencies": [
-		"ms-kubernetes-tools.vscode-kubernetes-tools"
-	],
-	"dependencies": {
-		"vscode-kubernetes-tools-api": "^1.0.0"
-	}
+  "name": "vscode-k8s-tree",
+  "displayName": "vscode-k8s-tree",
+  "description": "Tree view of kubernetes resources in VSCode Kubernetes Tools",
+  "version": "0.0.4",
+  "license": "MIT",
+  "publisher": "raushan2016",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raushan2016/vscode-k8s-tree.git"
+  },
+  "engines": {
+    "vscode": "^1.31.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "kubernetes",
+    "k8s",
+    "k8stree",
+    "treeview"
+  ],
+  "preview": true,
+  "icon": "icon.png",
+  "activationEvents": [
+    "onView:extension.vsKubernetesExplorer"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vscode-k8s-tree.show",
+        "title": "Show Tree"
+      },
+      {
+        "command": "vscode-k8s-tree.show.refresh",
+        "title": "Refresh Tree"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "vscode-k8s-tree.show.refresh",
+        "key": "shift+ctrl+r",
+        "mac": "shift+cmd+r",
+        "when": "vscodeKubernetesTreeViewContext"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "vscode-k8s-tree.show.refresh",
+          "when": "vscodeKubernetesTreeViewContext"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "vscode-k8s-tree.show",
+          "when": "view == extension.vsKubernetesExplorer && viewItem =~ /vsKubernetes\\.resource\\.*/i"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "test": "node ./out/test/runTest.js",
+    "pack": "vsce package"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/mkdirp": "^1.0.0",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.11.0",
+    "@types/tmp": "^0.1.0",
+    "@types/vscode": "^1.31.0",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "eslint": "^6.8.0",
+    "glob": "^7.1.6",
+    "mocha": "^7.1.1",
+    "typescript": "^3.8.3",
+    "vscode-test": "^1.3.0"
+  },
+  "extensionDependencies": [
+    "ms-kubernetes-tools.vscode-kubernetes-tools"
+  ],
+  "dependencies": {
+  "download": "^7.1.0",
+  "@types/tar": "^4.0.0",
+  "tar": "^4.4.1",
+  "shelljs": "^0.7.7",
+  "@types/shelljs": "^0.8.7",
+  "vscode-kubernetes-tools-api": "^1.0.0"
+  }
 }
