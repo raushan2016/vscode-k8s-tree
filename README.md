@@ -29,7 +29,7 @@ Run `kubectl krew install tree` [Details](https://github.com/ahmetb/kubectl-tree
 
 `vsce package` Generate vsix file
 `vsce login raushan2016`  
-`vsce publish minor` Publish the package with minor version upgrade
+`vsce publish patch` Publish the package with patch version upgrade
 
 
 ## Author
