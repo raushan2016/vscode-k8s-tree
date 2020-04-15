@@ -18,4 +18,5 @@ steps:
 - script: |
     npm install
     npm run vscode:prepublish
+    npm run lint
   displayName: 'npm install and build'
