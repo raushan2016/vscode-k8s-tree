@@ -3,6 +3,14 @@
 * This extension is buid on top of `vscode-kubernetes-tools` add `Tree View` command to all kubernetes resource.  
 * `Tree View` command gives a hierarchical view of kubernetes resources based on `OwnerReferences`
 
+## Installation
+
+This extension is published to vscode marketplace as [vscode-k8s-tree](https://marketplace.visualstudio.com/items?itemName=raushan2016.vscode-k8s-tree)  
+
+Search for `vscode-k8s-tree` in the VSCode Extensions  
+
+![Install IMG](assets/install.png)
+
 ## Features
 
 * The tree view automatically gets updated every 5 seconds for the next 10 minutes.  
