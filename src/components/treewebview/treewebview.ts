@@ -18,6 +18,7 @@ export class TreeViewPanel extends WebPanel {
         const fn = (panel: vscode.WebviewPanel, content: string, resource: string): TreeViewPanel => {
             return new TreeViewPanel(panel, content, resource, refresh);
         };
+        content = TreeViewPanel.beautifyHTML(content);
         WebPanel.createOrShowInternal<TreeViewPanel>(content, resource, TreeViewPanel.viewType, "Kubernetes TreeView", TreeViewPanel.currentPanels, fn);
     }
 
@@ -62,11 +63,11 @@ export class TreeViewPanel extends WebPanel {
         }
         this.panel.webview.postMessage({
             command: 'content',
-            content: this.beautifyHTML(result.stdout),
+            content: TreeViewPanel.beautifyHTML(result.stdout),
         });
     }
 
-    private beautifyHTML(treeString: string): string{
+    private static beautifyHTML(treeString: string): string{
 
         var lines = treeString.split(/[\r\n]+/);
         lines[0] = `<b>${lines[0]}</b>`;
@@ -91,21 +92,46 @@ export class TreeViewPanel extends WebPanel {
         <title>Kubernetes Treeview ${this.resource}</title>
         <script>
             const vscode = acquireVsCodeApi();
-
+            const requestRefresh = () => {
+                vscode.postMessage({
+                    command: 'refresh'
+                });
+            };
             window.addEventListener('message', event => {
                 const message = event.data;
                 switch (message.command) {
                     case 'content':
                         const elt = document.getElementById('content');
-                        elt.innerText = message.content;
+                        elt.innerHTML = message.content;
                 }
             });
+
+            const automaticRefresh = () => {
+                const val = 5;
+                var startTime = new Date().getTime();
+                var interval = setInterval(function(){
+                    if(new Date().getTime() - startTime > 600000){
+                        clearInterval(interval);
+                        return;
+                    }
+                    requestRefresh();
+                }, val * 1000);
+            };
         </script>
     </head>
     <body>
-        <code>
-            <pre id='content' style="font-size: 100%">${this.content}</pre>
-        </code>
+        <div style="position: absolute; right: 90%">
+          <a href="javascript:void;" onClick="requestRefresh();">Refresh</a>
+        </div>
+        <br/>
+        <div>
+           <code>
+              <pre id='content' style="font-size: 100%">${this.content}</pre>
+           </code>
+        </div>
+        <script>
+            automaticRefresh();
+        </script
     </body>
     </html>`;
     }

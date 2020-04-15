@@ -28,10 +28,12 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	let disposable = vscode.commands.registerCommand('vscode-k8s-tree.show', renderTreeView);
 	context.subscriptions.push(disposable);
+	disposable = vscode.commands.registerCommand('vscode-k8s-tree.show.refresh', TreeViewPanel.refreshCommand),
+	context.subscriptions.push(disposable);
 
 }
 
-async function renderTreeView(resourceNode?: k8s.ClusterExplorerV1.ClusterExplorerResourceNode) {
+async function renderTreeView(resourceNode?: any ) {// k8s.ClusterExplorerV1.ClusterExplorerResourceNode) {
 	if (!resourceNode) {
 		await vscode.window.showErrorMessage(`TreeView only works for resources, not with kinds`);
 		return;
@@ -42,12 +44,14 @@ async function renderTreeView(resourceNode?: k8s.ClusterExplorerV1.ClusterExplor
 		return;
 	}
 	const rootObjectName = resourceNode.name;
-	const rootObjectKind = resourceNode.resourceKind.manifestKind;
+	const rootObjectKind = resourceNode.kind.manifestKind;
 
-	const cmd = `tree -A  ${rootObjectKind} ${rootObjectName}`;
+	const cmd = `tree -A ${rootObjectKind} ${rootObjectName}`;
 	const commandResult = await kubectl.api.invokeCommand(cmd);
 
-	const refresh = (): Promise<ShellResult | undefined> => kubectl.api.invokeCommand(cmd);
+	const refresh = (): Promise<ShellResult | undefined> => {
+		return kubectl.api.invokeCommand(cmd);
+	};
 
 	if (!commandResult || commandResult.code !== 0) {
 		if(commandResult?.stderr.includes("unknown command \"tree\" for \"kubectl\""))

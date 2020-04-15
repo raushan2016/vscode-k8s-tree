@@ -32,9 +32,27 @@
 			{
 				"command": "vscode-k8s-tree.show",
 				"title": "Show Tree"
+			},
+			{
+				"command": "vscode-k8s-tree.show.refresh",
+				"title": "Refresh Tree"
 			}
 		],
+        "keybindings": [
+			{
+				"command": "vscode-k8s-tree.show.refresh",
+				"key": "shift+ctrl+r",
+				"mac": "shift+cmd+r",
+				"when": "vscodeKubernetesTreeViewContext"
+            }
+        ],
 		"menus": {
+            "editor/title": [
+                {
+                    "command": "vscode-k8s-tree.show.refresh",
+                    "when": "vscodeKubernetesTreeViewContext"
+                }
+            ],
 			"view/item/context": [
 				{
 					"command": "vscode-k8s-tree.show",
