@@ -2,6 +2,9 @@
 
 * This extension is buid on top of `vscode-kubernetes-tools` add `Tree View` command to all kubernetes resource.  
 * `Tree View` command gives a hierarchical view of kubernetes resources based on `OwnerReferences`
+* **Make sure you have latest kubectl which support `kubectl plugin` command**
+     * For windows -> 1.18
+     * For linux -> 1.14
 
 ## Installation
 
