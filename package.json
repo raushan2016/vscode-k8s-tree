@@ -92,7 +92,7 @@
     "@types/mkdirp": "^1.0.0",
     "@types/tmp": "^0.1.0",
     "download": "^7.1.0",
-    "shelljs": "^0.7.7",
+    "shelljs": "^0.8.5",
     "@types/shelljs": "^0.8.7",
     "vscode-kubernetes-tools-api": "^1.1.0"
   }
